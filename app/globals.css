@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy-950: #071321; /* deep navy */
+  --color-navy-900: #101d2e; /* midnight navy */
+  --color-navy-800: #17283e;
+  --color-brand: #2855d9; /* international blue */
+  --color-brand-bright: #1677f8; /* bright blue accent */
+  --color-cloud: #f6f8fa;
+  --color-graphite: #354152;
+  --color-steel: #8795a5;
+  --color-line: #dce3ea;
+  --color-auto: #527bae;
+  --color-makhana: #b68a4e;
+  --color-sage: #66856f;
+
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 16px;
+  --radius-feature: 24px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Site-wide layout: same full-width grid as the nav and hero, so every section lines up */
+@utility container-x {
+  width: 100%;
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= 48rem) {
+    padding-inline: 32px;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 56px;
+  }
+  @media (width >= 96rem) {
+    padding-inline: 80px;
+  }
+}
+
+/* ---------- Subtle brand gradients ---------- */
+/* Primary actions: international blue → bright blue; hover slides the gradient (pair with hover:bg-right) */
+@utility bg-grad-brand {
+  background-image: linear-gradient(120deg, #2349cc 0%, #2855d9 30%, #1677f8 70%, #3d8dff 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+}
+/* Dark feature surfaces: midnight → deep navy */
+@utility bg-grad-navy {
+  background-image: linear-gradient(160deg, #15263f 0%, #101d2e 45%, #0a1727 100%);
+}
+@utility bg-grad-deep {
+  background-image: linear-gradient(180deg, #0c1b30 0%, #071321 70%);
+}
+/* Light surfaces: barely-there cool tint */
+@utility bg-grad-white {
+  background-color: #fff;
+  background-image:
+    radial-gradient(1100px 520px at 100% 0%, rgba(40, 85, 217, 0.045), transparent 65%),
+    linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+}
+@utility bg-grad-cloud {
+  background-color: #f6f8fa;
+  background-image:
+    radial-gradient(900px 480px at 0% 0%, rgba(22, 119, 248, 0.05), transparent 60%),
+    linear-gradient(180deg, #f8fafc 0%, #f2f6fb 100%);
+}
+/* Gold accent (echoes the gold NC logo) for the hero tagline */
+@utility text-grad-gold {
+  background-image: linear-gradient(100deg, #fff1cf 0%, #f5c35a 45%, #e3a53a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Headings: navy with a gentle shift to deep blue */
+@utility text-grad-navy {
+  background-image: linear-gradient(100deg, #101d2e 0%, #101d2e 40%, #1f4280 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility text-grad-light {
+  background-image: linear-gradient(100deg, #ffffff 0%, #ffffff 45%, #c7dbff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Full-bleed layout for the nav and hero: spans the whole screen with fluid side margins */
+@utility container-wide {
+  width: 100%;
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= 48rem) {
+    padding-inline: 32px;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 56px;
+  }
+  @media (width >= 96rem) {
+    padding-inline: 80px;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.71875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility section-y {
+  padding-block: 96px;
+  @media (width >= 64rem) {
+    padding-block: 144px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+body {
+  background: var(--color-cloud);
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-bright);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Elements animated by GSAP start hidden only when JS + motion are available. */
+.js-motion [data-reveal],
+.js-motion [data-hero-item] {
+  opacity: 0;
+}
+/* World map: routes start undrawn, points hidden, until the GSAP sequence runs */
+.js-motion [data-route-mask] {
+  stroke-dashoffset: 1;
+}
+.js-motion [data-city],
+.js-motion [data-origin],
+.js-motion [data-label] {
+  opacity: 0;
+}
+.js-motion [data-reveal-image] {
+  clip-path: inset(100% 0% 0% 0%);
+}
+.js-motion [data-reveal-line="x"] {
+  transform: scaleX(0);
+}
+.js-motion [data-reveal-line="y"] {
+  transform: scaleY(0);
+}
+
+/* World map: marching dots along trade routes */
+.route-flow {
+  animation: route-flow 1.4s linear infinite;
+}
+.route-flow-fast {
+  animation: route-flow-fast 0.9s linear infinite;
+}
+@keyframes route-flow {
+  to { stroke-dashoffset: -9.1; }
+}
+@keyframes route-flow-fast {
+  to { stroke-dashoffset: -11.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-flow,
+  .route-flow-fast {
+    animation: none !important;
+  }
+  .route-pulses {
+    display: none;
+  }
+}
+
+@keyframes arc-flow {
+  from { stroke-dashoffset: 288; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes node-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes scroll-cue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
